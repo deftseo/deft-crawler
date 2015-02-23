@@ -23,6 +23,8 @@ Crawler.prototype.startUrl = function(startUrl) {
 
 Crawler.prototype.start = function() {
     console.log("Starting crawler");
+
+    // Testing event emitters are working as expected
     this.emit('externalLink', {href: 'http://www.google.com/'});
     this.emit('internalLink', {href: 'http://www.mainlytea.com/'});
 }
