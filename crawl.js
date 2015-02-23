@@ -30,7 +30,7 @@ Crawler.prototype.startUrl = function(startUrl) {
 }
 
 Crawler.prototype.addUrl = function(url) {
-    if (this.urlCache.indexOf(url) !== -1) {
+    if (this.urlCache.indexOf(url) === -1) {
         this.queue.push(url);
         this.urlCache.push(url);
     }
