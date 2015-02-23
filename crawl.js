@@ -1,5 +1,6 @@
 var url = require('url'),
     events = require('events'),
+    crypto = require('crypto'),
     request = require('request'),
     cheerio = require('cheerio');
 
@@ -25,14 +26,16 @@ Crawler.prototype.__proto__ = events.EventEmitter.prototype;
 
 Crawler.prototype.startUrl = function(startUrl) {
     this.startUrl = startUrl;
-    this.queue.push(startUrl);
+    this.addUrl(startUrl);
     return this;
 }
 
 Crawler.prototype.addUrl = function(url) {
-    if (this.urlCache.indexOf(url) === -1) {
+    var hash = crypto.createHash('sha1').update(url).digest('hex');
+
+    if (this.urlCache.indexOf(hash) === -1) {
         this.queue.push(url);
-        this.urlCache.push(url);
+        this.urlCache.push(hash);
     }
 
     return this;
