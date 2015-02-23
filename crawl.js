@@ -45,10 +45,6 @@ Crawler.prototype.start = function() {
     var self = this;
     console.log("[INIT-] Starting crawler");
 
-    // // Testing event emitters are working as expected
-    // this.emit('externalLink', {href: 'http://www.google.com/'});
-    // this.emit('internalLink', {href: 'http://www.mainlytea.com/'});
-
     process.nextTick(function() {
         self._crawl();
     });
@@ -57,8 +53,6 @@ Crawler.prototype.start = function() {
 Crawler.prototype._crawl = function() {
     var self = this,
         nextUrl = self.queue.shift();
-
-    //console.log('Fetching: ' + nextUrl);
 
     self._getUrl(nextUrl, function() {
         if (self.queue.length) {
