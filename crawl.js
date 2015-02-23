@@ -40,8 +40,7 @@ Crawler.prototype.addUrl = function(url) {
 
 Crawler.prototype.start = function() {
     var self = this;
-    console.log("Starting crawler");
-    console.log("Queue length: " + this.queue.length)
+    console.log("[INIT-] Starting crawler");
 
     // // Testing event emitters are working as expected
     // this.emit('externalLink', {href: 'http://www.google.com/'});
@@ -56,16 +55,15 @@ Crawler.prototype._crawl = function() {
     var self = this,
         nextUrl = self.queue.shift();
 
-    self._getUrl(nextUrl, function() {
-        console.log("Fetched: " + nextUrl);
+    //console.log('Fetching: ' + nextUrl);
 
-        // Next URL
+    self._getUrl(nextUrl, function() {
         if (self.queue.length) {
             process.nextTick(function() {
                 self._crawl();
             })
         } else {
-            console.log("Queue empty. Complete");
+            console.log("[QUEUE] Empty. Complete");
         }
     });
 }
@@ -74,21 +72,32 @@ Crawler.prototype._getUrl = function(pageUrl, callback) {
     var self = this;
 
     request(pageUrl, function(error, response, html) {
-        var $, links = [];
+        var $, $links;
 
         if (!error) {
             $ = cheerio.load(html);
-            $('a[href]').each(function(index) {
-                var $link = $(this),
-                    link,
-                    href = $link.attr('href');
+            $links = $('a[href]');
 
-                is_external = (href.indexOf('http') === 0 || href.indexOf('//') === 0);
+            console.log("[CRAWL] " + pageUrl + " (" + $links.length + " links)");
+
+            $links.each(function(index) {
+                var $link = $(this),
+                    href = $link.attr('href'),
+                    link,
+                    is_external = (
+                           href.indexOf('http') === 0
+                        || href.indexOf('//') === 0
+                    );
+
                 link = {
                     'base': pageUrl,
                     'href': is_external ? href : url.resolve(pageUrl, href),
                     'text': $link.text()
                 };
+
+                if (!is_external) {
+                    self.addUrl(link.href);
+                }
 
                 process.nextTick(function() {
                     linkType = is_external ? 'externalLink' : 'internalLink';
