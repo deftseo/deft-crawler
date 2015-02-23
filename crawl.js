@@ -1,4 +1,5 @@
-var events = require('events'),
+var url = require('url'),
+    events = require('events'),
     request = require('request'),
     cheerio = require('cheerio');
 
@@ -69,10 +70,10 @@ Crawler.prototype._crawl = function() {
     });
 }
 
-Crawler.prototype._getUrl = function(url, callback) {
+Crawler.prototype._getUrl = function(pageUrl, callback) {
     var self = this;
 
-    request(url, function(error, response, html) {
+    request(pageUrl, function(error, response, html) {
         var $, links = [];
 
         if (!error) {
@@ -82,11 +83,12 @@ Crawler.prototype._getUrl = function(url, callback) {
                     link,
                     href = $link.attr('href');
 
+                is_external = (href.indexOf('http') === 0 || href.indexOf('//') === 0);
                 link = {
-                    'href': href,
+                    'base': pageUrl,
+                    'href': is_external ? href : url.resolve(pageUrl, href),
                     'text': $link.text()
                 };
-                is_external = (link.href.indexOf('http') === 0 || link.href.indexOf('//') === 0);
 
                 process.nextTick(function() {
                     linkType = is_external ? 'externalLink' : 'internalLink';
