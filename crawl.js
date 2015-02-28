@@ -68,7 +68,7 @@ Crawler.prototype._crawl = function() {
     var self = this,
         nextUrl = self.queue.shift();
 
-    self._getUrl(nextUrl, function() {
+    self._getUrl(nextUrl.url, nextUrl.fromUrl, function() {
         if (self.queue.length) {
             process.nextTick(function() {
                 self._crawl();
@@ -79,41 +79,50 @@ Crawler.prototype._crawl = function() {
     });
 }
 
-Crawler.prototype._getUrl = function(pageUrl, callback) {
+Crawler.prototype._getUrl = function(pageUrl, fromUrl, callback) {
     var self = this;
 
     request(pageUrl, function(error, response, html) {
-        var $, $links;
+        var $, $links,
+            link,
+            isExternal = self.isExternalLink(pageUrl, fromUrl);
 
-        if (!error) {
+        if (error) {
+            console.log(error);
+        } else if (response.statusCode === 200) {
+            link = {
+                'href': pageUrl,
+                'statusCode': response.statusCode
+            }
+
+            // Fire internal/external events for this page
+            process.nextTick(function() {
+                linkType = isExternal ? 'externalLink' : 'internalLink';
+                self.emit(linkType, link);
+            });
+
+
+            // Find more links to crawl
             $ = cheerio.load(html);
             $links = $('a[href]');
 
-            console.log("[CRAWL] " + pageUrl + " (" + $links.length + " links)");
+            console.log("[CRAWL] " + response.statusCode + ": " + pageUrl + " (" + $links.length + " links)");
 
             $links.each(function(index) {
                 var $link = $(this),
                     href = $link.attr('href'),
-                    link,
-                    is_external = (
-                           href.indexOf('http') === 0
-                        || href.indexOf('//') === 0
-                    );
+                    link = url.resolve(pageUrl, href);
 
-                link = {
-                    'base': pageUrl,
-                    'href': is_external ? href : url.resolve(pageUrl, href),
-                    'text': $link.text()
-                };
+                //console.log("\t[FOUND] " + link);
 
-                if (!is_external) {
-                    self.addUrl(link.href);
+                if (self.canFollowLink(link, pageUrl)) {
+                    self.addUrl(link, pageUrl);
                 }
-
-                process.nextTick(function() {
-                    linkType = is_external ? 'externalLink' : 'internalLink';
-                    self.emit(linkType, link);
-                });
+            });
+        } else {
+            self.emit('linkNotFound', {
+                'href': pageUrl,
+                'statusCode': response.statusCode
             });
         }
 
