@@ -112,12 +112,13 @@ Crawler.prototype._getUrl = function(pageUrl, fromUrl, callback) {
 
     request(pageUrl, function(error, response, html) {
         var $, $links,
-            link,
-            isExternal = self._isExternalLink(pageUrl, fromUrl);
+            link, isExternal;
 
         if (error) {
             console.log(error);
+
         } else if (response.statusCode === 200) {
+            isExternal = self._isExternalLink(pageUrl, fromUrl);
             link = {
                 'href': pageUrl,
                 'statusCode': response.statusCode
@@ -148,7 +149,9 @@ Crawler.prototype._getUrl = function(pageUrl, fromUrl, callback) {
                 }
             });
         } else {
-            self.emit('linkNotFound', {
+            // TODO: how to handle redirects?
+            // TODO: Break down different types of errors. 500? 409? 401?
+            self.emit('linkError', {
                 'href': pageUrl,
                 'statusCode': response.statusCode
             });
