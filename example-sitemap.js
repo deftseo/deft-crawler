@@ -1,6 +1,6 @@
 var crawl = require('./crawl'),
     crawler = crawl.Crawler(),
-    startUrl = 'http://lotsofyoga.com/';
+    startUrl = 'http://mainlytea.com/';
 
 var sitemap = [];
 
