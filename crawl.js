@@ -30,11 +30,13 @@ Crawler.prototype.startUrl = function(startUrl) {
     return this;
 }
 
-Crawler.prototype.addUrl = function(url) {
+Crawler.prototype.addUrl = function(url, fromUrl) {
     var hash = crypto.createHash('sha1').update(url).digest('hex');
 
     if (this.urlCache.indexOf(hash) === -1) {
-        this.queue.push(url);
+        this.queue.push({
+            'url': url, 'fromUrl': fromUrl
+        });
         this.urlCache.push(hash);
     }
 
