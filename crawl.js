@@ -25,7 +25,7 @@ function Crawler() {
 Crawler.prototype.__proto__ = events.EventEmitter.prototype;
 
 Crawler.prototype.startUrl = function(startUrl) {
-    this.startUrl = startUrl;
+    this.startUrl = url.parse(startUrl);
     this.addUrl(startUrl);
     return this;
 }
