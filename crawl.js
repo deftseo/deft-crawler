@@ -52,6 +52,18 @@ Crawler.prototype.start = function() {
     });
 }
 
+Crawler.prototype.canFollowLink = function(nextLink, currentLink) {
+    // TODO: Put a filter in here
+    var nextUrl = url.parse(nextLink);
+    return nextUrl.host === this.startUrl.host;
+}
+
+Crawler.prototype.isExternalLink = function(nextUrl, fromUrl) {
+    nextUrl = url.parse(nextUrl);
+    fromUrl = (fromUrl) ? url.parse(fromUrl) : nextUrl;
+    return (nextUrl.hostname !== fromUrl.hostname);
+}
+
 Crawler.prototype._crawl = function() {
     var self = this,
         nextUrl = self.queue.shift();
