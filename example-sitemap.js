@@ -19,6 +19,6 @@ crawler
         console.log("[-" + link.statusCode + "-] " + link.href);
     })
     .on('end', function() {
-        console.log("[-END-] " + sitemap.length + " links");
+        console.log("[-END-] " + sitemap.length + " site pages found.");
     });
 

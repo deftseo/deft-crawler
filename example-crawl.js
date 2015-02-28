@@ -10,7 +10,7 @@ crawler
     .on('externalLink', function(link) {
         console.log("[EXTER] " + link.href);
     })
-    .on('linkNotFound', function(link) {
+    .on('linkError', function(link) {
         console.log("[-" + link.statusCode + "-] " + link.href);
     });
 
