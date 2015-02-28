@@ -24,13 +24,43 @@ function Crawler() {
 
 Crawler.prototype.__proto__ = events.EventEmitter.prototype;
 
+
+/**********************************************************************
+*
+* Configuration
+*
+**********************************************************************/
+
 Crawler.prototype.startUrl = function(startUrl) {
     this.startUrl = url.parse(startUrl);
-    this.addUrl(startUrl);
+    this._addUrl(startUrl);
     return this;
 }
 
-Crawler.prototype.addUrl = function(url, fromUrl) {
+
+/**********************************************************************
+*
+* Crawler public interface
+*
+**********************************************************************/
+
+Crawler.prototype.start = function() {
+    var self = this;
+    console.log("[INIT-] Starting crawler");
+
+    process.nextTick(function() {
+        self._crawl();
+    });
+}
+
+
+/**********************************************************************
+*
+* Crawler implementation
+*
+**********************************************************************/
+
+Crawler.prototype._addUrl = function(url, fromUrl) {
     var hash = crypto.createHash('sha1').update(url).digest('hex');
 
     if (this.urlCache.indexOf(hash) === -1) {
@@ -43,26 +73,20 @@ Crawler.prototype.addUrl = function(url, fromUrl) {
     return this;
 }
 
-Crawler.prototype.start = function() {
-    var self = this;
-    console.log("[INIT-] Starting crawler");
 
-    process.nextTick(function() {
-        self._crawl();
-    });
-}
-
-Crawler.prototype.canFollowLink = function(nextLink, currentLink) {
+Crawler.prototype._canFollowLink = function(nextLink, currentLink) {
     // TODO: Put a filter in here
     var nextUrl = url.parse(nextLink);
     return nextUrl.host === this.startUrl.host;
 }
 
-Crawler.prototype.isExternalLink = function(nextUrl, fromUrl) {
+
+Crawler.prototype._isExternalLink = function(nextUrl, fromUrl) {
     nextUrl = url.parse(nextUrl);
     fromUrl = (fromUrl) ? url.parse(fromUrl) : nextUrl;
     return (nextUrl.hostname !== fromUrl.hostname);
 }
+
 
 Crawler.prototype._crawl = function() {
     var self = this,
@@ -82,13 +106,14 @@ Crawler.prototype._crawl = function() {
     });
 }
 
+
 Crawler.prototype._getUrl = function(pageUrl, fromUrl, callback) {
     var self = this;
 
     request(pageUrl, function(error, response, html) {
         var $, $links,
             link,
-            isExternal = self.isExternalLink(pageUrl, fromUrl);
+            isExternal = self._isExternalLink(pageUrl, fromUrl);
 
         if (error) {
             console.log(error);
@@ -118,8 +143,8 @@ Crawler.prototype._getUrl = function(pageUrl, fromUrl, callback) {
 
                 //console.log("\t[FOUND] " + link);
 
-                if (self.canFollowLink(link, pageUrl)) {
-                    self.addUrl(link, pageUrl);
+                if (self._canFollowLink(link, pageUrl)) {
+                    self._addUrl(link, pageUrl);
                 }
             });
         } else {
