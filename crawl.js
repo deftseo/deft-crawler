@@ -46,7 +46,7 @@ Crawler.prototype.startUrl = function(startUrl) {
 
 Crawler.prototype.start = function() {
     var self = this;
-    console.log("[INIT-] Starting crawler");
+    console.log("[START] Starting crawler");
 
     process.nextTick(function() {
         self._crawl();
@@ -98,7 +98,7 @@ Crawler.prototype._crawl = function() {
                 self._crawl();
             })
         } else {
-            console.log("[QUEUE] Empty. Complete");
+            console.log("[FINIS] Empty. Complete");
             process.nextTick(function() {
                 self.emit('end');
             })
