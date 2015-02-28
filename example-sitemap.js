@@ -1,10 +1,11 @@
 var crawl = require('./crawl'),
-    crawler = crawl.Crawler();
+    crawler = crawl.Crawler(),
+    startUrl = 'http://lotsofyoga.com/';
 
 var sitemap = [];
 
 crawler
-    .startUrl('http://lotsofyoga.com/')
+    .startUrl(startUrl)
     .on('internalLink', function(link) {
 
         if (link.statusCode === 200) {

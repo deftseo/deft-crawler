@@ -1,8 +1,9 @@
 var crawl = require('./crawl'),
-    crawler = crawl.Crawler();
+    crawler = crawl.Crawler(),
+    startUrl = 'http://mainlytea.com/';
 
 crawler
-    .startUrl('http://mainlytea.com/')
+    .startUrl(startUrl)
     .on('internalLink', function(link) {
         console.log("[INTER] " + link.href)
     })
