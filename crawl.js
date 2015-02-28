@@ -75,6 +75,9 @@ Crawler.prototype._crawl = function() {
             })
         } else {
             console.log("[QUEUE] Empty. Complete");
+            process.nextTick(function() {
+                self.emit('end');
+            })
         }
     });
 }
