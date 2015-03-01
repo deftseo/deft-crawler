@@ -160,7 +160,7 @@ Crawler.prototype._logCrawlResponse = function(pageUrl, fromUrl, statusCode) {
 
     // Fire internal/external events for this page
     process.nextTick(function() {
-        var linkType = isExternal ? 'externalLink' : 'internalLink';
+        var linkType = isExternal ? 'link.external' : 'link.internal';
         self.emit(linkType, link);
     });
 }
@@ -185,7 +185,7 @@ Crawler.prototype._getUrl = function(pageUrl, fromUrl, callback) {
     var self = this;
 
     request(pageUrl, function(error, response, html) {
-        var $, $links;
+        var $page;
 
         if (error) {
             console.log(error);
@@ -201,7 +201,7 @@ Crawler.prototype._getUrl = function(pageUrl, fromUrl, callback) {
         } else {
             // TODO: how to handle redirects?
             // TODO: Break down different types of errors. 500? 409? 401?
-            self.emit('linkError', {
+            self.emit('link.error', {
                 'href': pageUrl,
                 'statusCode': response.statusCode
             });
