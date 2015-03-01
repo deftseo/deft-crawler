@@ -152,8 +152,7 @@ Crawler.prototype._getUrl = function(pageUrl, fromUrl, callback) {
     var self = this;
 
     request(pageUrl, function(error, response, html) {
-        var $, $links,
-            link, isExternal;
+        var $, $links, link, isExternal;
 
         if (error) {
             console.log(error);
@@ -167,7 +166,7 @@ Crawler.prototype._getUrl = function(pageUrl, fromUrl, callback) {
 
             // Fire internal/external events for this page
             process.nextTick(function() {
-                linkType = isExternal ? 'externalLink' : 'internalLink';
+                var linkType = isExternal ? 'externalLink' : 'internalLink';
                 self.emit(linkType, link);
             });
 
