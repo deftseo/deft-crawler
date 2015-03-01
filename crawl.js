@@ -148,36 +148,39 @@ Crawler.prototype._normaliseUrl = function(pageUrl, fromUrl) {
 }
 
 
+Crawler.prototype._logCrawlResponse = function(pageUrl, fromUrl, statusCode) {
+    var self = this,
+        isExternal = self._isExternalLink(pageUrl, fromUrl),
+        link = {
+            'href': pageUrl,
+            'statusCode': statusCode
+        }
+
+    console.log("[CRAWL] " + pageUrl);
+
+    // Fire internal/external events for this page
+    process.nextTick(function() {
+        var linkType = isExternal ? 'externalLink' : 'internalLink';
+        self.emit(linkType, link);
+    });
+}
+
+
 Crawler.prototype._getUrl = function(pageUrl, fromUrl, callback) {
     var self = this;
 
     request(pageUrl, function(error, response, html) {
-        var $, $links, link, isExternal;
+        var $, $links;
 
         if (error) {
             console.log(error);
 
         } else if (response.statusCode === 200) {
-            isExternal = self._isExternalLink(pageUrl, fromUrl);
-            link = {
-                'href': pageUrl,
-                'statusCode': response.statusCode
-            }
-
-            // Fire internal/external events for this page
-            process.nextTick(function() {
-                var linkType = isExternal ? 'externalLink' : 'internalLink';
-                self.emit(linkType, link);
-            });
-
+            self._logCrawlResponse(pageUrl, fromUrl, response.statusCode);
 
             // Find more links to crawl
             $ = cheerio.load(html);
-            $links = $('a[href]');
-
-            console.log("[CRAWL] " + response.statusCode + ": " + pageUrl + " (" + $links.length + " links)");
-
-            $links.each(function(index) {
+            $('a[href]').each(function(index) {
                 var $link = $(this),
                     href = $link.attr('href'),
                     link = self._normaliseUrl(href, pageUrl);
@@ -186,6 +189,7 @@ Crawler.prototype._getUrl = function(pageUrl, fromUrl, callback) {
                     self._addUrl(link, pageUrl);
                 }
             });
+
         } else {
             // TODO: how to handle redirects?
             // TODO: Break down different types of errors. 500? 409? 401?
