@@ -166,6 +166,21 @@ Crawler.prototype._logCrawlResponse = function(pageUrl, fromUrl, statusCode) {
 }
 
 
+Crawler.prototype._followPageLinks = function($page, pageUrl) {
+    var self = this;
+
+    $page('a[href]').each(function(index) {
+        var $link = $page(this),
+            href = $link.attr('href'),
+            link = self._normaliseUrl(href, pageUrl);
+
+        if (self._canFollowLink(link, pageUrl)) {
+            self._addUrl(link, pageUrl);
+        }
+    });
+}
+
+
 Crawler.prototype._getUrl = function(pageUrl, fromUrl, callback) {
     var self = this;
 
@@ -178,17 +193,10 @@ Crawler.prototype._getUrl = function(pageUrl, fromUrl, callback) {
         } else if (response.statusCode === 200) {
             self._logCrawlResponse(pageUrl, fromUrl, response.statusCode);
 
-            // Find more links to crawl
-            $ = cheerio.load(html);
-            $('a[href]').each(function(index) {
-                var $link = $(this),
-                    href = $link.attr('href'),
-                    link = self._normaliseUrl(href, pageUrl);
+            // Process html page
+            $page = cheerio.load(html);
+            self._followPageLinks($page, pageUrl);
 
-                if (self._canFollowLink(link, pageUrl)) {
-                    self._addUrl(link, pageUrl);
-                }
-            });
 
         } else {
             // TODO: how to handle redirects?
