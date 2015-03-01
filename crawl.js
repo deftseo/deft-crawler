@@ -13,6 +13,9 @@ function Crawler() {
 
     events.EventEmitter.call(self);
     self.config = {};
+    self.filters = {
+        'follow': []
+    };
 
     self.queue    = [];
     self.urlCache = [];
@@ -34,6 +37,12 @@ Crawler.prototype.__proto__ = events.EventEmitter.prototype;
 Crawler.prototype.startUrl = function(startUrl) {
     this.startUrl = url.parse(startUrl);
     this._addUrl(startUrl);
+    return this;
+}
+
+
+Crawler.prototype.follow = function(followFn) {
+    this.filters.follow.push(followFn);
     return this;
 }
 
@@ -75,9 +84,34 @@ Crawler.prototype._addUrl = function(url, fromUrl) {
 
 
 Crawler.prototype._canFollowLink = function(nextLink, currentLink) {
-    // TODO: Put a filter in here
-    var nextUrl = url.parse(nextLink);
-    return nextUrl.host === this.startUrl.host;
+    var nextUrl;
+
+    if (this.filters.follow.length) {
+        canFollow = this._filterFollowLinks(nextLink, currentLink);
+    } else {
+        nextUrl = url.parse(nextLink)
+        canFollow = (nextUrl.host === this.startUrl.host);
+    }
+
+    return canFollow;
+}
+
+
+Crawler.prototype._filterFollowLinks = function(nextLink, currentLink) {
+    var canFollow = false,
+        filter, i, j;
+
+    for(i = 0, j = this.filters.follow.length; i < j; i++) {
+        filter = this.filters.follow[i];
+        if (filter instanceof Function) {
+            canFollow = filter(nextLink, currentLink);
+            if (canFollow) {
+                break;
+            }
+        }
+    }
+
+    return canFollow;
 }
 
 
