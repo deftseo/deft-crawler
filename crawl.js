@@ -132,7 +132,7 @@ Crawler.prototype._crawl = function() {
                 self._crawl();
             })
         } else {
-            console.log("[FINIS] Empty. Complete");
+            console.log("[EMPTY] Crawl queue empty. Complete");
             process.nextTick(function() {
                 self.emit('end');
             })
@@ -181,10 +181,7 @@ Crawler.prototype._getUrl = function(pageUrl, fromUrl, callback) {
             $links.each(function(index) {
                 var $link = $(this),
                     href = $link.attr('href'),
-                    //link = url.resolve(pageUrl, href);
                     link = self._normaliseUrl(href, pageUrl);
-
-                //console.log("\t[FOUND] " + link);
 
                 if (self._canFollowLink(link, pageUrl)) {
                     self._addUrl(link, pageUrl);
