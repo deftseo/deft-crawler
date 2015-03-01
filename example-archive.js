@@ -12,7 +12,9 @@ var crawl = require('./crawl'),
 crawler
     .startUrl(startUrl)
     .follow(function(link) {
-        isArchive = pagePattern.test(link);
+        var isArchive = pagePattern.test(link),
+            dateMatches;
+
         if (isArchive) {
             dateMatches = /(\d{6})\d+/.exec(link);
             isArchive = (dateMatches[1] <= maxDate) && (dateMatches[1] >= minDate);
