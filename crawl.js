@@ -141,6 +141,13 @@ Crawler.prototype._crawl = function() {
 }
 
 
+Crawler.prototype._normaliseUrl = function(pageUrl, fromUrl) {
+    var link = url.parse(url.resolve(fromUrl, pageUrl));
+    if (link.hash) { link.hash = null; }
+    return url.format(link);
+}
+
+
 Crawler.prototype._getUrl = function(pageUrl, fromUrl, callback) {
     var self = this;
 
@@ -174,7 +181,8 @@ Crawler.prototype._getUrl = function(pageUrl, fromUrl, callback) {
             $links.each(function(index) {
                 var $link = $(this),
                     href = $link.attr('href'),
-                    link = url.resolve(pageUrl, href);
+                    //link = url.resolve(pageUrl, href);
+                    link = self._normaliseUrl(href, pageUrl);
 
                 //console.log("\t[FOUND] " + link);
 
