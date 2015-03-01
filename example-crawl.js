@@ -4,13 +4,13 @@ var crawl = require('./crawl'),
 
 crawler
     .startUrl(startUrl)
-    .on('internalLink', function(link) {
+    .on('link.internal', function(link) {
         console.log("[INTER] " + link.href)
     })
-    .on('externalLink', function(link) {
+    .on('link.external', function(link) {
         console.log("[EXTER] " + link.href);
     })
-    .on('linkError', function(link) {
+    .on('link.error', function(link) {
         console.log("[-" + link.statusCode + "-] " + link.href);
     });
 

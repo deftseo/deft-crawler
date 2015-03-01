@@ -6,7 +6,7 @@ var sitemap = [];
 
 crawler
     .startUrl(startUrl)
-    .on('internalLink', function(link) {
+    .on('link.internal', function(link) {
 
         if (link.statusCode === 200) {
             console.log("[-MAP-] " + link.href);
@@ -15,7 +15,7 @@ crawler
             console.log("\t[-" + link.statusCode + "-] " + link.href);
         }
     })
-    .on('linkError', function(link) {
+    .on('link.error', function(link) {
         console.log("[-" + link.statusCode + "-] " + link.href);
     })
     .on('end', function() {
