@@ -1,5 +1,5 @@
-var crawl = require('../crawl'),
-    crawler = crawl.Crawler(),
+var Crawler = require('../Crawler'),
+    crawler = Crawler.Crawler(),
     startUrl = 'http://mainlytea.com/';
 
 var sitemap = [];
