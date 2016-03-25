@@ -3,6 +3,7 @@ var Crawler = require('../Crawler'),
     domain = "wiringschematics.net",
 
     // Archive.org URL patterns
+    // TODO: How to get this starting point given just the domain
     startUrl = 'https://web.archive.org/web/20120627105817/http://' + domain + '/',
     archivePattern = "^https:\/\/web\.archive\.org\/web\/\\d+\/http:\/\/" + domain + "\/",
     pagePattern = new RegExp(archivePattern),
