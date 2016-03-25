@@ -47,6 +47,12 @@ Crawler.prototype.follow = function(followFn) {
 }
 
 
+Crawler.prototype.isStartDomain = function(testUrl) {
+    var testUrl = url.parse(testUrl);
+    return this.startUrl.host == testUrl.host;
+}
+
+
 /**********************************************************************
 *
 * Crawler public interface
@@ -55,7 +61,7 @@ Crawler.prototype.follow = function(followFn) {
 
 Crawler.prototype.start = function() {
     var self = this;
-    console.log("[START] Starting crawler");
+    console.log("[START] Starting crawler at " + url.format(self.startUrl));
 
     process.nextTick(function() {
         self._crawl();
@@ -156,7 +162,7 @@ Crawler.prototype._logCrawlResponse = function(pageUrl, fromUrl, statusCode) {
             'statusCode': statusCode
         }
 
-    console.log("[CRAWL] " + pageUrl);
+    //console.log("[CRAWL] " + pageUrl);
 
     // Fire internal/external events for this page
     process.nextTick(function() {
