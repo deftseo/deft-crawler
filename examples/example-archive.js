@@ -26,4 +26,7 @@ crawler
     })
     .on('link.error', function(link) {
         console.log("[-" + link.statusCode + "-] " + link.href);
+
+        // TODO: Create a sitemap.xml from this
+        console.log(sitemap);
     });
