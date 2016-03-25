@@ -1,4 +1,4 @@
-var crawl = require('./crawl'),
+var crawl = require('../crawl'),
     crawler = crawl.Crawler(),
     domain = "wiringschematics.net",
 
