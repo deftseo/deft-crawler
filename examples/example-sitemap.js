@@ -1,6 +1,7 @@
 var Crawler = require('../Crawler'),
     crawler = Crawler.Crawler(),
-    startUrl = 'http://mainlytea.com/';
+    args = process.argv.slice(2),
+    startUrl = (args.length)? args[0] : 'http://example.com/';
 
 var sitemap = [];
 
