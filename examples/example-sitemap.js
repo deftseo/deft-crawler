@@ -20,5 +20,8 @@ crawler
     })
     .on('end', function() {
         console.log("[-END-] " + sitemap.length + " site pages found.");
+
+        // TODO: Create a sitemap.xml from this
+        console.log(sitemap);
     });
 
