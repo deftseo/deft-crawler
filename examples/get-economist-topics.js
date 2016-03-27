@@ -33,9 +33,6 @@ crawler
     .on('link.internal', function(link) {
         console.log("[INTER] " + link.href)
     })
-    // .on('link.external', function(link) {
-    //     console.log("[EXTER] " + link.href);
-    // })
     .on('link.error', function(link) {
         console.log("[-" + link.statusCode + "-]", link.href);
     });
