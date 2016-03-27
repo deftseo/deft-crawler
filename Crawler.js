@@ -16,6 +16,7 @@ function Crawler() {
     self.filters = {
         'follow': []
     };
+    self.domainConfig = {};
 
     self.queue    = [];
     self.urlCache = [];
@@ -47,9 +48,9 @@ Crawler.prototype.follow = function(followFn) {
 }
 
 
-Crawler.prototype.isStartDomain = function(testUrl) {
-    var testUrl = url.parse(testUrl);
-    return this.startUrl.host == testUrl.host;
+Crawler.prototype.addDomainConfig = function(domain, config) {
+    this.domainConfig[domain] = config;
+    return this;
 }
 
 
