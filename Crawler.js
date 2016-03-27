@@ -169,7 +169,7 @@ Crawler.prototype._logCrawlResponse = function(pageUrl, fromUrl, statusCode) {
             'statusCode': statusCode
         }
 
-    //console.log("[CRAWL] " + pageUrl);
+    console.log("[CRAWL] " + pageUrl);
 
     // Fire internal/external events for this page
     process.nextTick(function() {
