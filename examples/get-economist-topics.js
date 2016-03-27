@@ -8,11 +8,6 @@ var Crawler = require('../Crawler')
 
 crawler
     .startUrl(startUrl)
-    .addDomainConfig('www.economist.com', {
-        canonicalise: function(url) {
-            return url;
-        }
-    })
     .follow(function(nextUrl, fromUrl) {
         // Follow any URL under /topics*
         return nextUrl.startsWith(baseUrl);
