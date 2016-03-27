@@ -1,8 +1,8 @@
-var Crawler = require('../Crawler'),
+var crawler = require('../Crawler').Crawler(),
     fs = require('fs'),
-    crawler = Crawler.Crawler(),
     args = process.argv.slice(2),
-    startUrl = (args.length)? args[0] : 'http://example.com/';
+    startUrl = (args.length) ? args[0] : 'http://example.com/',
+    filename = (args.length > 1) ? args[1] : null;
 
 var sitemap = [];
 
@@ -22,10 +22,7 @@ crawler
     })
     .on('end', function() {
         console.log("[-END-] " + sitemap.length + " site pages found.");
-
-        // TODO: Create a sitemap.xml from this
-        console.log(sitemap);
-        createSiteMap(sitemap);
+        createSiteMap(sitemap, filename);
     });
 
 
