@@ -208,6 +208,7 @@ Crawler.prototype._getUrl = function(pageUrl, fromUrl, callback) {
 
             // Process html page
             $page = cheerio.load(html);
+            self.emit('page', {'href': pageUrl}, $page);
             self._followPageLinks($page, pageUrl);
 
 
