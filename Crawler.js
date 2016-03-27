@@ -70,6 +70,19 @@ Crawler.prototype.start = function() {
 }
 
 
+Crawler.prototype.isStartDomain = function(testUrl) {
+    var testUrl = url.parse(testUrl);
+    return this.startUrl.host == testUrl.host;
+}
+
+
+Crawler.prototype.normaliseUrl = function(pageUrl, fromUrl) {
+    var link = url.parse(url.resolve(fromUrl, pageUrl));
+    if (link.hash) { link.hash = null; }
+    return url.format(link);
+}
+
+
 /**********************************************************************
 *
 * Crawler implementation
@@ -148,13 +161,6 @@ Crawler.prototype._crawl = function() {
 }
 
 
-Crawler.prototype._normaliseUrl = function(pageUrl, fromUrl) {
-    var link = url.parse(url.resolve(fromUrl, pageUrl));
-    if (link.hash) { link.hash = null; }
-    return url.format(link);
-}
-
-
 Crawler.prototype._logCrawlResponse = function(pageUrl, fromUrl, statusCode) {
     var self = this,
         isExternal = self._isExternalLink(pageUrl, fromUrl),
@@ -179,7 +185,7 @@ Crawler.prototype._followPageLinks = function($page, pageUrl) {
     $page('a[href]').each(function(index) {
         var $link = $page(this),
             href = $link.attr('href'),
-            link = self._normaliseUrl(href, pageUrl);
+            link = self.normaliseUrl(href, pageUrl);
 
         if (self._canFollowLink(link, pageUrl)) {
             self._addUrl(link, pageUrl);
