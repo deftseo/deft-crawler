@@ -5,6 +5,8 @@ var url = require('url'),
     cheerio = require('cheerio');
 var bloom = require('bloomfilter');
 
+var REQ_TIMEOUT = 10 * 1000; //Timeout in milliseconds
+
 
 function Crawler() {
     var self = this;
@@ -191,34 +193,40 @@ Crawler.prototype._followPageLinks = function($page, pageUrl) {
 Crawler.prototype._getUrl = function(pageUrl, fromUrl, callback) {
     var self = this;
 
-    request(pageUrl, function(error, response, html) {
-        var $page;
+    request(
+        {
+            uri: pageUrl,
+            timeout: REQ_TIMEOUT
+        },
+        function(error, response, html) {
+            var $page;
 
-        if (error) {
-            console.log(error);
+            if (error) {
+                console.log("[ERROR]", error);
+            
+            } else if (response.statusCode === 200) {
+                self._logCrawlResponse(pageUrl, fromUrl, response.statusCode);
 
-        } else if (response.statusCode === 200) {
-            self._logCrawlResponse(pageUrl, fromUrl, response.statusCode);
+                // Process html page
+                $page = cheerio.load(html);
+                self.emit('page', {'href': pageUrl}, $page);
+                self._followPageLinks($page, pageUrl);
 
-            // Process html page
-            $page = cheerio.load(html);
-            self.emit('page', {'href': pageUrl}, $page);
-            self._followPageLinks($page, pageUrl);
+            } else {
+                // TODO: how to handle redirects?
+                // TODO: Break down different types of errors. 500? 409? 401?
+                self.emit('link.error', {
+                    'href': pageUrl,
+                    'statusCode': response.statusCode
+                });
+            }
 
-
-        } else {
-            // TODO: how to handle redirects?
-            // TODO: Break down different types of errors. 500? 409? 401?
-            self.emit('link.error', {
-                'href': pageUrl,
-                'statusCode': response.statusCode
+            process.nextTick(function() {
+                callback();
             });
-        }
 
-        process.nextTick(function() {
-            callback();
-        });
-    });
+        }
+    );
 }
 
 
