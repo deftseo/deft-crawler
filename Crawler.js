@@ -3,6 +3,7 @@ var url = require('url'),
     crypto = require('crypto'),
     request = require('request'),
     cheerio = require('cheerio');
+var bloom = require('bloomfilter');
 
 
 function Crawler() {
@@ -18,7 +19,8 @@ function Crawler() {
     };
 
     self.queue    = [];
-    self.urlCache = [];
+    self.urlCache = new bloom.BloomFilter(14377588, 17);
+    self.urlCacheLen = 0;
 
     process.nextTick(function() {
         self.start();
@@ -83,13 +85,12 @@ Crawler.prototype.normaliseUrl = function(pageUrl, fromUrl) {
 **********************************************************************/
 
 Crawler.prototype._addUrl = function(url, fromUrl) {
-    var hash = crypto.createHash('sha1').update(url).digest('hex');
-
-    if (this.urlCache.indexOf(hash) === -1) {
+    if (!this.urlCache.test(url)) {
         this.queue.push({
             'url': url, 'fromUrl': fromUrl
         });
-        this.urlCache.push(hash);
+        this.urlCache.add(url);
+        this.urlCacheLen++;
     }
 
     return this;
