@@ -9,7 +9,8 @@
         "url": "http://deftseo.com/"
     },
     "dependencies": {
-        "request": "latest",
-        "cheerio": "latest"
+        "bloomfilter": "0.0.16",
+        "cheerio": "latest",
+        "request": "latest"
     }
 }
