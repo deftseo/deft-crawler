@@ -23,6 +23,7 @@ function Crawler() {
     self.queue    = [];
     self.urlCache = new bloom.BloomFilter(14377588, 17);
     self.urlCacheLen = 0;
+    self.crawlLen = 0;
 
     process.nextTick(function() {
         self.start();
@@ -205,6 +206,7 @@ Crawler.prototype._getUrl = function(pageUrl, fromUrl, callback) {
                 console.log("[ERROR]", error);
             
             } else if (response.statusCode === 200) {
+                self.crawlLen++;
                 self._logCrawlResponse(pageUrl, fromUrl, response.statusCode);
 
                 // Process html page
