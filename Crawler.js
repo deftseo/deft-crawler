@@ -7,6 +7,15 @@ var bloom = require('bloomfilter');
 
 var REQ_TIMEOUT = 10 * 1000; //Timeout in milliseconds
 
+function SimpleQueue() {
+    var self = this;
+    if (!(this instanceof SimpleQueue)) {
+        return new SimpleQueue();
+    }
+};
+
+SimpleQueue.prototype.__proto__ = Array.prototype;
+
 
 function Crawler() {
     var self = this;
@@ -20,7 +29,7 @@ function Crawler() {
         'follow': []
     };
 
-    self.queue    = [];
+    self.queue    = new SimpleQueue();
     self.urlCache = new bloom.BloomFilter(14377588, 17);
     self.urlCacheLen = 0;
     self.crawlLen = 0;
