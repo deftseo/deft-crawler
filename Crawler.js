@@ -16,6 +16,14 @@ function SimpleQueue() {
 
 SimpleQueue.prototype.__proto__ = Array.prototype;
 
+SimpleQueue.prototype.next = function() {
+    return this.shift();
+};
+
+SimpleQueue.prototype.add = function(item) {
+    this.push(item);
+}
+
 
 function Crawler() {
     var self = this;
@@ -98,7 +106,7 @@ Crawler.prototype.normaliseUrl = function(pageUrl, fromUrl) {
 
 Crawler.prototype._addUrl = function(url, fromUrl) {
     if (!this.urlCache.test(url)) {
-        this.queue.push({
+        this.queue.add({
             'url': url, 'fromUrl': fromUrl
         });
         this.urlCache.add(url);
@@ -150,7 +158,7 @@ Crawler.prototype._isExternalLink = function(nextUrl, fromUrl) {
 
 Crawler.prototype._crawl = function() {
     var self = this,
-        nextUrl = self.queue.shift();
+        nextUrl = self.queue.next();
 
     self._getUrl(nextUrl.url, nextUrl.fromUrl, function() {
         if (self.queue.length) {
