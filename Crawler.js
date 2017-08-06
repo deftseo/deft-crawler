@@ -1,8 +1,8 @@
-var url = require('url'),
-    events = require('events'),
-    crypto = require('crypto'),
-    request = require('request'),
-    cheerio = require('cheerio');
+var url = require('url');
+var events = require('events');
+var crypto = require('crypto');
+var request = require('request');
+var cheerio = require('cheerio');
 var bloom = require('bloomfilter');
 
 var REQ_TIMEOUT = 10 * 1000; //Timeout in milliseconds
