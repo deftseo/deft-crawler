@@ -203,7 +203,7 @@ Crawler.prototype._getUrl = function(pageUrl, fromUrl, callback) {
             var $page;
 
             if (error) {
-                console.log("[ERROR]", error);
+                console.log("[ERROR]", pageUrl, error);
             
             } else if (response.statusCode === 200) {
                 self.crawlLen++;
