@@ -22,6 +22,7 @@ crawler
     })
     .on('end', function() {
         console.log("[-END-] " + sitemap.length + " site pages found.");
+        console.log("[-END-] " + crawler.errorLen + " pages crawl errors.");
         createSiteMap(sitemap, filename);
     });
 
