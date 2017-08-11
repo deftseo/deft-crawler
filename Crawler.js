@@ -89,6 +89,7 @@ function Crawler() {
     self.urlCache = new bloom.BloomFilter(14377588, 17);
     self.urlCacheLen = 0;
     self.crawlLen = 0;
+    self.errorLen = 0;
 
     process.nextTick(function() {
         self.start();
@@ -268,6 +269,7 @@ Crawler.prototype._getUrl = function(pageUrl, fromUrl, callback) {
             var $page;
 
             if (error) {
+                self.errorLen++;
                 console.log("[ERROR]", pageUrl, error);
             
             } else if (response.statusCode === 200) {
@@ -282,6 +284,7 @@ Crawler.prototype._getUrl = function(pageUrl, fromUrl, callback) {
             } else {
                 // TODO: how to handle redirects?
                 // TODO: Break down different types of errors. 500? 409? 401?
+                self.errorLen++;
                 self.emit('link.error', {
                     'href': pageUrl,
                     'statusCode': response.statusCode
