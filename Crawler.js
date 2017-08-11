@@ -85,6 +85,7 @@ function Crawler() {
     };
 
     self.queue    = new SimpleQueue();
+    //self.queue    = new PaginatedQueue();
     self.urlCache = new bloom.BloomFilter(14377588, 17);
     self.urlCacheLen = 0;
     self.crawlLen = 0;
