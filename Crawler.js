@@ -24,6 +24,11 @@ SimpleQueue.prototype.add = function(item) {
     this.push(item);
 }
 
+SimpleQueue.prototype.queueLength = function() {
+    return this.length;
+}
+
+
 
 function Crawler() {
     var self = this;
@@ -161,7 +166,7 @@ Crawler.prototype._crawl = function() {
         nextUrl = self.queue.next();
 
     self._getUrl(nextUrl.url, nextUrl.fromUrl, function() {
-        if (self.queue.length) {
+        if (self.queue.queueLength()) {
             process.nextTick(function() {
                 self._crawl();
             })
@@ -183,7 +188,7 @@ Crawler.prototype._logCrawlResponse = function(pageUrl, fromUrl, statusCode) {
             'statusCode': statusCode
         }
 
-    console.log("[CRAWL] [" + self.crawlLen + "|" + self.queue.length + "|" + self.urlCacheLen + "] " + pageUrl);
+    console.log("[CRAWL] [" + self.crawlLen + "|" + self.queue.queueLength() + "|" + self.urlCacheLen + "] " + pageUrl);
 
     // Fire internal/external events for this page
     process.nextTick(function() {
