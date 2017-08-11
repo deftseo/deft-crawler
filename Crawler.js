@@ -7,6 +7,11 @@ var bloom = require('bloomfilter');
 
 var REQ_TIMEOUT = 10 * 1000; //Timeout in milliseconds
 
+/**********************************************************************
+*
+* SimpleQueue -- a simple wrapper around an array
+*
+**********************************************************************/
 function SimpleQueue() {
     var self = this;
     if (!(this instanceof SimpleQueue)) {
@@ -30,6 +35,13 @@ SimpleQueue.prototype.queueLength = function() {
 
 
 
+
+
+/**********************************************************************
+*
+* Crawler -- the main class to Crawl urls from a start point.
+*
+**********************************************************************/
 function Crawler() {
     var self = this;
     if (!(this instanceof Crawler)) {
