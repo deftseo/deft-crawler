@@ -29,6 +29,10 @@ SimpleQueue.prototype.add = function(item) {
     this.push(item);
 }
 
+SimpleQueue.prototype.empty = function(item) {
+    this.splice(0);
+}
+
 SimpleQueue.prototype.queueLength = function() {
     return this.length;
 }
@@ -131,6 +135,12 @@ Crawler.prototype.start = function() {
     process.nextTick(function() {
         self._crawl();
     });
+}
+
+
+Crawler.prototype.stop = function() {
+    console.log("[STOP] Stopping crawler");
+    this.queue.empty();
 }
 
 
