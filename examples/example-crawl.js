@@ -1,7 +1,7 @@
-var Crawler = require('../Crawler'),
-    crawler = Crawler.Crawler(),
-    args = process.argv.slice(2),
-    startUrl = (args.length)? args[0] : 'http://example.com/';
+var Crawler = require('../Crawler');
+var crawler = Crawler.Crawler();
+var args = process.argv.slice(2);
+var startUrl = (args.length)? args[0] : 'http://example.com/';
 
 crawler
     .quiet()
@@ -14,7 +14,7 @@ crawler
         // console.log("[INTER] " + link.href)
     })
     .on('link.external', function(link) {
-        console.log("[EXTER] " + link.href);
+        console.log("External link:", link.href);
     })
     .on('link.error', function(link) {
         console.log("[-" + link.statusCode + "-] " + link.href);
