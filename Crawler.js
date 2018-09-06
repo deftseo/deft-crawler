@@ -82,6 +82,8 @@ function Crawler(args) {
         return new Crawler(args);
     }
 
+    args = args || {};
+
     events.EventEmitter.call(self);
     self.config = {};
     self.filters = {
