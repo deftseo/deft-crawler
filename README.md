@@ -9,19 +9,20 @@ Example: Finding external links:
 --------------------------------
 
 ```javascript
-var Crawler = require('../Crawler'),
-    crawler = Crawler.Crawler(),
-    args = process.argv.slice(2),
-    startUrl = (args.length)? args[0] : 'http://example.com/';
+var Crawler = require('../Crawler');
+var crawler = Crawler.Crawler();
+var args = process.argv.slice(2);
+var startUrl = (args.length)? args[0] : 'http://example.com/';
 
 crawler
+    .quiet()
     .startUrl(startUrl)
     .follow(function(nextUrl, fromUrl) {
         // If the nextUrl is linked to from the start domain, we are interested.
         return crawler.isStartDomain(fromUrl);
     })
     .on('link.external', function(link) {
-        console.log("[EXTERNAL LINK] " + link.href);
+        console.log("External link: ", link.href);
     })
     .on('link.error', function(link) {
         console.log("[-" + link.statusCode + "-] " + link.href);
