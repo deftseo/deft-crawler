@@ -96,7 +96,8 @@ function Crawler(args) {
     self.urlCacheLen = 0;
     self.crawlLen = 0;
     self.errorLen = 0;
-    self.isVerbose = true;
+    self.isVerbose = args.hasOwnProperty('verbose')
+        ? args.verbose : true;
 
     process.nextTick(function() {
         self.start();
