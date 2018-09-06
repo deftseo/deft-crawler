@@ -94,6 +94,7 @@ function Crawler() {
     self.urlCacheLen = 0;
     self.crawlLen = 0;
     self.errorLen = 0;
+    self.isVerbose = true;
 
     process.nextTick(function() {
         self.start();
@@ -139,7 +140,10 @@ Crawler.prototype.start = function() {
 
 
 Crawler.prototype.log = function() {
-    console.log.apply(null, arguments);
+    var self = this;
+    if (self.isVerbose) {
+        console.log.apply(null, arguments);
+    }
 }
 
 
