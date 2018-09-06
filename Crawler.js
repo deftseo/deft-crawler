@@ -126,6 +126,12 @@ Crawler.prototype.follow = function(followFn) {
 }
 
 
+Crawler.prototype.quiet = function() {
+    this.isVerbose = false;
+    return this;
+}
+
+
 /**********************************************************************
 *
 * Crawler public interface
