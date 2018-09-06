@@ -21,7 +21,7 @@ crawler
         return crawler.isStartDomain(fromUrl);
     })
     .on('link.external', function(link) {
-        console.log("[EXTER] " + link.href);
+        console.log("[EXTERNAL LINK] " + link.href);
     })
     .on('link.error', function(link) {
         console.log("[-" + link.statusCode + "-] " + link.href);
