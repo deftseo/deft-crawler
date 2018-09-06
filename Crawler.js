@@ -130,7 +130,7 @@ Crawler.prototype.follow = function(followFn) {
 
 Crawler.prototype.start = function() {
     var self = this;
-    console.log("[START] Starting crawler at " + url.format(self.startUrl));
+    self.log("[START] Starting crawler at " + url.format(self.startUrl));
 
     process.nextTick(function() {
         self._crawl();
@@ -138,8 +138,13 @@ Crawler.prototype.start = function() {
 }
 
 
+Crawler.prototype.log = function() {
+    console.log.apply(null, arguments);
+}
+
+
 Crawler.prototype.stop = function() {
-    console.log("[STOP] Stopping crawler");
+    self.log("[STOP] Stopping crawler");
     this.queue.empty();
 }
 
@@ -225,7 +230,7 @@ Crawler.prototype._crawl = function() {
                 self._crawl();
             })
         } else {
-            console.log("[EMPTY] Crawl queue empty. Complete");
+            self.log("[EMPTY] Crawl queue empty. Complete");
             process.nextTick(function() {
                 self.emit('end');
             })
@@ -242,7 +247,7 @@ Crawler.prototype._logCrawlResponse = function(pageUrl, fromUrl, statusCode) {
             'statusCode': statusCode
         }
 
-    console.log("[CRAWL] [" + self.crawlLen + "|" + self.queue.queueLength() + "|" + self.urlCacheLen + "] " + pageUrl);
+    self.log("[CRAWL] [" + self.crawlLen + "|" + self.queue.queueLength() + "|" + self.urlCacheLen + "] " + pageUrl);
 
     // Fire internal/external events for this page
     process.nextTick(function() {
@@ -280,7 +285,7 @@ Crawler.prototype._getUrl = function(pageUrl, fromUrl, callback) {
 
             if (error) {
                 self.errorLen++;
-                console.log("[ERROR]", pageUrl, error);
+                self.log("[ERROR]", pageUrl, error);
             
             } else if (response.statusCode === 200) {
                 self.crawlLen++;
