@@ -76,10 +76,10 @@ PaginatedQueue.prototype.queueLength = function() {
 * Crawler -- the main class to Crawl urls from a start point.
 *
 **********************************************************************/
-function Crawler() {
+function Crawler(args) {
     var self = this;
     if (!(this instanceof Crawler)) {
-        return new Crawler();
+        return new Crawler(args);
     }
 
     events.EventEmitter.call(self);
