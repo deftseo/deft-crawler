@@ -1,11 +1,11 @@
 {
     "name": "node-crawler",
-    "version": "0.0.1",
+    "version": "1.1.0",
     "description": "Node.js crawler",
     "main": "crawl.js",
     "author": {
-        "name": "Bailey Reynolds",
-        "email": "bailey@deftseo.com",
+        "name": "DeftSEO",
+        "email": "@deftseo@inboxlite.com",
         "url": "http://deftseo.com/"
     },
     "dependencies": {
