@@ -4,6 +4,7 @@ var Crawler = require('../Crawler'),
     startUrl = (args.length)? args[0] : 'http://example.com/';
 
 crawler
+    .quiet()
     .startUrl(startUrl)
     .follow(function(nextUrl, fromUrl) {
         // If the nextUrl is linked to from the start domain, we are interested.
