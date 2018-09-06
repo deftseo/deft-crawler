@@ -323,7 +323,7 @@ Crawler.prototype._getUrl = function(pageUrl, fromUrl, callback) {
 
 
 module.exports = {
-    Crawler: function() {
-        return new Crawler();
+    Crawler: function(args) {
+        return new Crawler(args);
     }
 }
