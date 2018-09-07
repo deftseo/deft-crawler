@@ -5,8 +5,8 @@
     "main": "crawl.js",
     "author": {
         "name": "DeftSEO",
-        "email": "@deftseo@inboxlite.com",
-        "url": "http://deftseo.com/"
+        "email": "deftseo@inboxlite.com",
+        "url": "https://github.com/deftseo/"
     },
     "dependencies": {
         "bloomfilter": "0.0.16",
