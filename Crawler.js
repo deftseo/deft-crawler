@@ -106,9 +106,6 @@ Crawler.prototype.isStartDomain = function(testUrl) {
 }
 
 
-Crawler.prototype.normaliseUrl = urlUtils.normaliseUrl;
-
-
 /**********************************************************************
 *
 * Crawler implementation
@@ -208,7 +205,7 @@ Crawler.prototype._followPageLinks = function($page, pageUrl) {
     $page('a[href]').each(function(index) {
         var $link = $page(this),
             href = $link.attr('href'),
-            link = self.normaliseUrl(href, pageUrl);
+            link = urlUtils.normaliseUrl(href, pageUrl);
 
         if (self._canFollowLink(link, pageUrl)) {
             self._addUrl(link, pageUrl);
