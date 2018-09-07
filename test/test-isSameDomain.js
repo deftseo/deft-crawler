@@ -2,9 +2,11 @@ var assert = require('assert');
 var isSameDomain = require('../lib/url-utils').isSameDomain;
 
 describe('isSameDomain()', function() {
-    it('should compare two urls', function() {
-        var link1 = "http://example.com/";
+    var links = [
+        "http://example.com/"
+    ];
 
-        assert.ok(isSameDomain(link1, link1));
+    it('should compare two urls', function() {
+        assert.ok(isSameDomain(links[0], links[0], "same url matches"));
     });
 });
