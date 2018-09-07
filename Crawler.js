@@ -106,11 +106,7 @@ Crawler.prototype.isStartDomain = function(testUrl) {
 }
 
 
-Crawler.prototype.normaliseUrl = function(pageUrl, fromUrl) {
-    var link = url.parse(url.resolve(fromUrl, pageUrl));
-    if (link.hash) { link.hash = null; }
-    return url.format(link);
-}
+Crawler.prototype.normaliseUrl = urlUtils.normaliseUrl;
 
 
 /**********************************************************************
