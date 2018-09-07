@@ -6,6 +6,7 @@ var crypto = require('crypto');
 var request = require('request');
 var cheerio = require('cheerio');
 var bloom = require('bloomfilter');
+var urlUtils = require('./lib/url-utils');
 
 var REQ_TIMEOUT = 10 * 1000; //Timeout in milliseconds
 
@@ -101,8 +102,7 @@ Crawler.prototype.stop = function() {
 
 
 Crawler.prototype.isStartDomain = function(testUrl) {
-    var testUrl = url.parse(testUrl);
-    return this.startUrl.host == testUrl.host;
+    return urlUtils.isSameDomain(this.startUrl, testUrl);
 }
 
 
