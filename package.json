@@ -12,5 +12,11 @@
         "bloomfilter": "0.0.16",
         "cheerio": "latest",
         "request": "latest"
+    },
+    "devDependencies": {
+        "mocha": "^5.2.0"
+    },
+    "scripts": {
+        "test": "mocha"
     }
 }
