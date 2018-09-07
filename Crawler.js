@@ -161,9 +161,7 @@ Crawler.prototype._filterFollowLinks = function(nextLink, currentLink) {
 
 
 Crawler.prototype._isExternalLink = function(nextUrl, fromUrl) {
-    nextUrl = url.parse(nextUrl);
-    fromUrl = (fromUrl) ? url.parse(fromUrl) : nextUrl;
-    return (nextUrl.hostname !== fromUrl.hostname);
+    return fromUrl && !urlUtils.isSameDomain(nextUrl, fromUrl);
 }
 
 
