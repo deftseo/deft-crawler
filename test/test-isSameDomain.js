@@ -7,7 +7,9 @@ describe('isSameDomain()', function() {
         "http://example.com/",
         "http://example.com/hello",
         "https://example.com/hello",
-        "http://microsoft.org/",
+        "http://example.org/",
+        "http://www.example.org/",
+        "http://mail.example.org/",
         ""
     ];
 
@@ -20,5 +22,10 @@ describe('isSameDomain()', function() {
 
     it("shouldn't match different domains", function() {
         assert.ok(!isSameDomain(links[0], links[4]), "different domains");
+    });
+
+    it("shouldn't match sub-domains", function() {
+        assert.ok(!isSameDomain(links[4], links[5]), "compare subdomain with root domain");
+        assert.ok(!isSameDomain(links[5], links[6]), "compare two subdomains");
     });
 });
