@@ -10,7 +10,6 @@ var bloom = require('bloomfilter');
 var REQ_TIMEOUT = 10 * 1000; //Timeout in milliseconds
 
 
-
 /**********************************************************************
 *
 * Crawler -- the main class to Crawl urls from a start point.
