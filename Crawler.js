@@ -1,3 +1,4 @@
+var queue = require('./lib/simple-queue');
 var url = require('url');
 var events = require('events');
 var crypto = require('crypto');
@@ -6,36 +7,6 @@ var cheerio = require('cheerio');
 var bloom = require('bloomfilter');
 
 var REQ_TIMEOUT = 10 * 1000; //Timeout in milliseconds
-
-/**********************************************************************
-*
-* SimpleQueue -- a simple wrapper around an array
-*
-**********************************************************************/
-function SimpleQueue() {
-    var self = this;
-    if (!(this instanceof SimpleQueue)) {
-        return new SimpleQueue();
-    }
-};
-
-SimpleQueue.prototype.__proto__ = Array.prototype;
-
-SimpleQueue.prototype.next = function() {
-    return this.shift();
-};
-
-SimpleQueue.prototype.add = function(item) {
-    this.push(item);
-}
-
-SimpleQueue.prototype.empty = function(item) {
-    this.splice(0);
-}
-
-SimpleQueue.prototype.queueLength = function() {
-    return this.length;
-}
 
 
 /**********************************************************************
@@ -90,7 +61,8 @@ function Crawler(args) {
         'follow': []
     };
 
-    self.queue    = new SimpleQueue();
+    self.queue    = queue.Queue();
+    //self.queue    = new SimpleQueue();
     //self.queue    = new PaginatedQueue();
     self.urlCache = new bloom.BloomFilter(14377588, 17);
     self.urlCacheLen = 0;
