@@ -1,4 +1,5 @@
 var queue = require('./lib/simple-queue');
+// var queue = require('./lib/paginated-queue');
 var url = require('url');
 var events = require('events');
 var crypto = require('crypto');
@@ -8,38 +9,6 @@ var bloom = require('bloomfilter');
 
 var REQ_TIMEOUT = 10 * 1000; //Timeout in milliseconds
 
-
-/**********************************************************************
-*
-* PaginatedQueue -- a paginated queue so it can be persisted to disk
-*
-**********************************************************************/
-function PaginatedQueue() {
-    var self = this;
-    if (!(this instanceof PaginatedQueue)) {
-        return new PaginatedQueue();
-    }
-
-    this.items = [];
-    this.headIdx = 0;
-    this.tailIdx = 0;
-};
-
-PaginatedQueue.prototype.next = function() {
-    var item = this.items[this.headIdx];
-    this.items[this.headIdx] = null;
-    this.headIdx++;
-    return item;
-};
-
-PaginatedQueue.prototype.add = function(item) {
-    this.items[this.tailIdx] = item;
-    this.tailIdx++;
-}
-
-PaginatedQueue.prototype.queueLength = function() {
-    return this.tailIdx - this.headIdx;
-}
 
 
 /**********************************************************************
