@@ -14,6 +14,8 @@ describe('normaliseUrl()', function() {
     });
 
     it('should normalise dot-relative urls', function() {
+        assert.equal(normaliseUrl("", baseUrl), "http://example.com/hello/");
+        assert.equal(normaliseUrl(".", baseUrl), "http://example.com/hello/");
         assert.equal(normaliseUrl("./world", baseUrl), "http://example.com/hello/world");
         assert.equal(normaliseUrl("../world", baseUrl), "http://example.com/world");
         assert.equal(normaliseUrl("../../world", baseUrl), "http://example.com/world");
