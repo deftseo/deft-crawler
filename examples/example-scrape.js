@@ -1,5 +1,9 @@
 var Scraper = require('../Scraper');
-var scrapeUrl = "http://example.com/";
+
+var args = process.argv.slice(2);
+var scrapeUrl = (args.length) ? args[0] : "http://example.com/";
+
+
 
 Scraper.Scraper(scrapeUrl, function($page, pageUrl) {
     var title = $page('head title').text().trim();
