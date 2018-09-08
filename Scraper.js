@@ -57,6 +57,10 @@ Scraper.prototype.scrape = function(pageUrl, callback) {
 }
 
 
+Scraper.prototype.log = function() {
+    console.log.apply(null, arguments);
+}
+
 
 module.exports = {
     Scraper: function(pageUrl, callback) {
