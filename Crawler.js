@@ -1,74 +1,14 @@
+var queue = require('./lib/simple-queue');
+// var queue = require('./lib/paginated-queue');
 var url = require('url');
 var events = require('events');
 var crypto = require('crypto');
 var request = require('request');
 var cheerio = require('cheerio');
 var bloom = require('bloomfilter');
+var urlUtils = require('./lib/url-utils');
 
 var REQ_TIMEOUT = 10 * 1000; //Timeout in milliseconds
-
-/**********************************************************************
-*
-* SimpleQueue -- a simple wrapper around an array
-*
-**********************************************************************/
-function SimpleQueue() {
-    var self = this;
-    if (!(this instanceof SimpleQueue)) {
-        return new SimpleQueue();
-    }
-};
-
-SimpleQueue.prototype.__proto__ = Array.prototype;
-
-SimpleQueue.prototype.next = function() {
-    return this.shift();
-};
-
-SimpleQueue.prototype.add = function(item) {
-    this.push(item);
-}
-
-SimpleQueue.prototype.empty = function(item) {
-    this.splice(0);
-}
-
-SimpleQueue.prototype.queueLength = function() {
-    return this.length;
-}
-
-
-/**********************************************************************
-*
-* PaginatedQueue -- a paginated queue so it can be persisted to disk
-*
-**********************************************************************/
-function PaginatedQueue() {
-    var self = this;
-    if (!(this instanceof PaginatedQueue)) {
-        return new PaginatedQueue();
-    }
-
-    this.items = [];
-    this.headIdx = 0;
-    this.tailIdx = 0;
-};
-
-PaginatedQueue.prototype.next = function() {
-    var item = this.items[this.headIdx];
-    this.items[this.headIdx] = null;
-    this.headIdx++;
-    return item;
-};
-
-PaginatedQueue.prototype.add = function(item) {
-    this.items[this.tailIdx] = item;
-    this.tailIdx++;
-}
-
-PaginatedQueue.prototype.queueLength = function() {
-    return this.tailIdx - this.headIdx;
-}
 
 
 /**********************************************************************
@@ -90,8 +30,7 @@ function Crawler(args) {
         'follow': []
     };
 
-    self.queue    = new SimpleQueue();
-    //self.queue    = new PaginatedQueue();
+    self.queue    = queue.Queue();
     self.urlCache = new bloom.BloomFilter(14377588, 17);
     self.urlCacheLen = 0;
     self.crawlLen = 0;
@@ -163,15 +102,7 @@ Crawler.prototype.stop = function() {
 
 
 Crawler.prototype.isStartDomain = function(testUrl) {
-    var testUrl = url.parse(testUrl);
-    return this.startUrl.host == testUrl.host;
-}
-
-
-Crawler.prototype.normaliseUrl = function(pageUrl, fromUrl) {
-    var link = url.parse(url.resolve(fromUrl, pageUrl));
-    if (link.hash) { link.hash = null; }
-    return url.format(link);
+    return urlUtils.isSameDomain(this.startUrl, testUrl);
 }
 
 
@@ -227,9 +158,7 @@ Crawler.prototype._filterFollowLinks = function(nextLink, currentLink) {
 
 
 Crawler.prototype._isExternalLink = function(nextUrl, fromUrl) {
-    nextUrl = url.parse(nextUrl);
-    fromUrl = (fromUrl) ? url.parse(fromUrl) : nextUrl;
-    return (nextUrl.hostname !== fromUrl.hostname);
+    return fromUrl && !urlUtils.isSameDomain(nextUrl, fromUrl);
 }
 
 
@@ -276,7 +205,7 @@ Crawler.prototype._followPageLinks = function($page, pageUrl) {
     $page('a[href]').each(function(index) {
         var $link = $page(this),
             href = $link.attr('href'),
-            link = self.normaliseUrl(href, pageUrl);
+            link = urlUtils.normaliseUrl(href, pageUrl);
 
         if (self._canFollowLink(link, pageUrl)) {
             self._addUrl(link, pageUrl);

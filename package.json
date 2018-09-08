@@ -1,16 +1,22 @@
 {
     "name": "node-crawler",
     "version": "1.1.0",
-    "description": "Node.js crawler",
+    "description": "Package for creating custom web-crawlers and scrapers",
     "main": "crawl.js",
     "author": {
         "name": "DeftSEO",
-        "email": "@deftseo@inboxlite.com",
-        "url": "http://deftseo.com/"
+        "email": "deftseo@inboxlite.com",
+        "url": "https://github.com/deftseo/"
     },
     "dependencies": {
         "bloomfilter": "0.0.16",
         "cheerio": "latest",
         "request": "latest"
+    },
+    "devDependencies": {
+        "mocha": "^5.2.0"
+    },
+    "scripts": {
+        "test": "mocha"
     }
 }
