@@ -1,12 +1,16 @@
+node-crawler
+============
+
+An event-based crawler implementation for building specialised Web crawlers. Also containsa single-page Scraper for one-off page processing.
+
+Both use [cheerio](https://github.com/cheeriojs/cheerio) which offers a jQuery-like interface to navigating and extracting information from the retrieved document.
+
+
 Crawler
-=======
-
-An event-based crawler implementation for building specialised Web crawlers.
+-------
 
 
-
-Example: Finding external links:
---------------------------------
+### Example: Finding external links:
 
 ```javascript
 var Crawler = require('../Crawler');
@@ -28,4 +32,5 @@ crawler
         console.log("[-" + link.statusCode + "-] " + link.href);
     });
 ```
+
 
