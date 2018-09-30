@@ -49,7 +49,7 @@ Scraper.prototype.scrape = function(pageUrl, callback) {
             } else {
                 // TODO: how to handle redirects?
                 // TODO: Break down different types of errors. 500? 409? 401?
-                self.log("[-" + response.statusCode + "-] " + pageUrl);
+                self.error("[-" + response.statusCode + "-] " + pageUrl);
             }
 
         }
