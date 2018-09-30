@@ -38,7 +38,7 @@ Scraper.prototype.scrape = function(pageUrl, callback) {
             var $page;
 
             if (error) {
-                self.log("[ERROR]", pageUrl, error);
+                self.error("[ERROR]", pageUrl, error.message);
             
             } else if (response.statusCode === 200) {
                 $page = cheerio.load(html);
