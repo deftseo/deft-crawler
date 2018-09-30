@@ -17,6 +17,6 @@ crawler
         console.log("External link:", link.href);
     })
     .on('link.error', function(link) {
-        console.log("[-" + link.statusCode + "-] " + link.href);
+        console.error("[-" + link.statusCode + "-] " + link.href);
     });
 
