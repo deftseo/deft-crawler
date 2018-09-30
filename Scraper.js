@@ -62,6 +62,12 @@ Scraper.prototype.log = function() {
 }
 
 
+Scraper.prototype.error = function() {
+    var self = this;
+    console.error.apply(null, arguments);
+}
+
+
 module.exports = {
     Scraper: function(pageUrl, callback) {
         return new Scraper(pageUrl, callback);
