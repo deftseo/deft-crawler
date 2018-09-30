@@ -234,7 +234,7 @@ Crawler.prototype._getUrl = function(pageUrl, fromUrl, callback) {
 
             if (error) {
                 self.errorLen++;
-                self.log("[ERROR]", pageUrl, error);
+                self.error("[ERROR]", pageUrl, error.message);
             
             } else if (response.statusCode === 200) {
                 self.crawlLen++;
