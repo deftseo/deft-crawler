@@ -95,6 +95,13 @@ Crawler.prototype.log = function() {
 }
 
 
+Crawler.prototype.error = function() {
+    var self = this;
+
+    console.error.apply(null, arguments);
+}
+
+
 Crawler.prototype.stop = function() {
     self.log("[STOP] Stopping crawler");
     this.queue.empty();
