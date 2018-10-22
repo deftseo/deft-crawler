@@ -1,10 +1,12 @@
-var Crawler = require('../Crawler')
-    url = require('url'),
-    crawler = Crawler.Crawler(),
-    args = process.argv.slice(2),
-    startUrl = (args.length)? args[0] : 'http://www.economist.com/topics/a',
-    baseUrl = 'http://www.economist.com/topics/',
-    topicBase = '/topics/';
+var Crawler = require('../');
+var crawler = Crawler.Crawler();
+var url = require('url');
+
+var args = process.argv.slice(2);
+
+var startUrl = (args.length)? args[0] : 'http://www.economist.com/topics/a';
+var baseUrl = 'http://www.economist.com/topics/';
+var topicBase = '/topics/';
 
 crawler
     .startUrl(startUrl)
@@ -17,7 +19,7 @@ crawler
         $page('div.ec-glossary-columns li a[href]').each(function() {
             var $link = $page(this),
                 linkUrl = url.parse(
-                    crawler.normaliseUrl($link.attr('href'), startUrl)
+                    Crawler.normaliseUrl($link.attr('href'), startUrl)
                 ),
                 topicSlug = linkUrl.pathname.slice(topicBase.length),
                 topicTitle = $link.text().trim();
