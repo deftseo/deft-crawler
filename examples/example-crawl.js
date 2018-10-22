@@ -1,5 +1,4 @@
-var Crawler = require('../Crawler');
-var crawler = Crawler.Crawler();
+var crawler = require('../').Crawler();
 var args = process.argv.slice(2);
 var startUrl = (args.length)? args[0] : 'http://example.com/';
 
