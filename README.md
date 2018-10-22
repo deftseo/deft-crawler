@@ -1,9 +1,15 @@
-node-crawler
+deft-crawler
 ============
 
-An event-based crawler implementation for building specialised Web crawlers. Also containsa single-page Scraper for one-off page processing.
+A simple event-based crawler implementation for building specialised Web crawlers. Also containsa single-page Scraper for one-off page processing.
 
 Both use [cheerio](https://github.com/cheeriojs/cheerio) which offers a jQuery-like interface to navigating and extracting information from the retrieved document.
+
+
+Installation
+------------
+
+    npm install deft-crawler
 
 
 Crawler
