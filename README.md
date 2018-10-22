@@ -19,8 +19,7 @@ Crawler
 ### Example: Finding external links:
 
 ```javascript
-var Crawler = require('../Crawler');
-var crawler = Crawler.Crawler();
+var crawler = require('deft-crawler').Crawler();
 var args = process.argv.slice(2);
 var startUrl = (args.length)? args[0] : 'http://example.com/';
 
@@ -45,12 +44,12 @@ Scraper
 ### Example: extract all links from a page
 
 ```javascript
-var Scraper = require('../Scraper');
+var Crawler = require('deft-crawlerr');
 
 var args = process.argv.slice(2);
 var scrapeUrl = (args.length) ? args[0] : "http://example.com/";
 
-Scraper.Scraper(scrapeUrl, function($page, pageUrl) {
+Crawler.scrape(scrapeUrl, function($page, pageUrl) {
     var title = $page('head title').text().trim();
     console.log("In callback for:", pageUrl);
     console.log("Title:", title);
