@@ -1,4 +1,4 @@
-var crawler = require('../Crawler').Crawler(),
+var crawler = require('../').Crawler(),
     fs = require('fs'),
     args = process.argv.slice(2),
     startUrl = (args.length) ? args[0] : 'http://example.com/',
