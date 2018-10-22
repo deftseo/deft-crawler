@@ -1,4 +1,4 @@
-var crawler = require('../Crawler').Crawler();
+var crawler = require('../').Crawler();
 var fs = require('fs');
 var startUrl = 'https://sivers.org/book';
 var filename = "sivers-summaries.txt";
