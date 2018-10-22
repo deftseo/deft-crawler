@@ -1,14 +1,13 @@
-var Crawler = require('../Crawler'),
-    crawler = Crawler.Crawler(),
-    domain = "wiringschematics.net",
+var crawler = require('../').Crawler();
+var domain = "wiringschematics.net";
 
     // Archive.org URL patterns
     // TODO: How to get this starting point given just the domain
-    startUrl = 'https://web.archive.org/web/20120627105817/http://' + domain + '/',
-    archivePattern = "^https:\/\/web\.archive\.org\/web\/\\d+\/http:\/\/" + domain + "\/",
-    pagePattern = new RegExp(archivePattern),
-    maxDate = '20121231',
-    minDate = '20120101';
+var startUrl = 'https://web.archive.org/web/20120627105817/http://' + domain + '/';
+var archivePattern = "^https:\/\/web\.archive\.org\/web\/\\d+\/http:\/\/" + domain + "\/";
+var pagePattern = new RegExp(archivePattern);
+var maxDate = '20121231';
+var minDate = '20120101';
 
 crawler
     .startUrl(startUrl)
@@ -28,6 +27,4 @@ crawler
     .on('link.error', function(link) {
         console.log("[-" + link.statusCode + "-] " + link.href);
 
-        // TODO: Create a sitemap.xml from this
-        console.log(sitemap);
     });
