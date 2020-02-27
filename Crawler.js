@@ -37,6 +37,8 @@ function Crawler(args) {
     self.errorLen = 0;
     self.isVerbose = args.hasOwnProperty('verbose')
         ? args.verbose : true;
+    
+    self.isActive = true;
 
     process.nextTick(function() {
         self.start();
@@ -103,8 +105,10 @@ Crawler.prototype.error = function() {
 
 
 Crawler.prototype.stop = function() {
+    var self = this;
     self.log("[STOP] Stopping crawler");
-    this.queue.empty();
+    self.queue.empty();
+    self.isActive = false;
 }
 
 
@@ -174,7 +178,7 @@ Crawler.prototype._crawl = function() {
         nextUrl = self.queue.next();
 
     self._getUrl(nextUrl.url, nextUrl.fromUrl, function() {
-        if (self.queue.queueLength()) {
+        if (self.isActive && self.queue.queueLength()) {
             process.nextTick(function() {
                 self._crawl();
             })
